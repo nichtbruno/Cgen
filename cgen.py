@@ -1,11 +1,16 @@
 import os
 import sys
 
-
+###############
+# DEFINITIONS #
+###############
 working_dir = os.getcwd()+"/"
 home_dir = "$HOME/Scripts/Cgen/"
 forced = False
 
+#############
+# TEMPLATES #
+#############
 gitignore_temp = """# Prerequisites
 *.d
 
@@ -160,7 +165,9 @@ readme_temp = """# NAME
 ### DESC
 """
 
-
+###########
+# OPTIONS #
+###########
 options = {
         "-hlp --help": "Invokes help",
         "-p --project": "Generates a C project acording to user input",
@@ -174,10 +181,13 @@ options = {
         "-ign --ignore": "Generates a .gitignore file",
         }
 commands = {
-        "-f --force": "Forces an option into execution and rewrites the files",
+        "-f --force": "Force the operation, overwriting existing files if necessary",
         }
 
 
+#############
+# FUNCTIONS #
+#############
 def failed_start():
     print("Wrong use of: cgen [OPTION] [COMMAND]")
     print("Use 'cgen --help' for more info.")
@@ -355,6 +365,9 @@ def gitignore():
         file.write(gitignore_temp)
 
 
+#####
+# ? #
+#####
 option = get_needed_option()
 match option:
     case "-p" | "--project":

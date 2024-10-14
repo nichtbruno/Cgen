@@ -38,3 +38,5 @@ alias cgen="python ~/Cgen/cgen.py"
 # Note 🗒️
 I am currently not planning to change this to more convenient way
 of installing and use. Maybe in the future but for now it works.
+
+The code is horrible :|

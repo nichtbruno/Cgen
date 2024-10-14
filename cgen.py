@@ -143,22 +143,6 @@ run: $(TARGET)
 
 .PHONY: all clean run
 """
-options = {
-        "-help": "      Invokes help",
-        "-MakeSDL": "   Generates a SDL Makefile (use with C)",
-        "-MakeC": "     Generates a Makefile for pure C",
-        "-cc": "        Generates a source [.c] and a header [.h] file",
-        "-h": "         Generates only a header [.h] file",
-        "-c": "         Generates only a source [.c] file",
-        "-m": "         Generates a file with the main function",
-        "-r": "         Generates a README file",
-        "-ig": "        Generates a .gitignore file",
-        "-pp": "        Generates a C project acording to user input",
-        }
-commands = {
-        "-f": "         Forces an option into execution and rewrites the files",
-        }
-
 header_temp = """#ifndef PLACE_H
 #define PLACE_H
 
@@ -177,9 +161,26 @@ readme_temp = """# NAME
 """
 
 
+options = {
+        "-hlp --help": "Invokes help",
+        "-p --project": "Generates a C project acording to user input",
+        "-sdl --make-sdl": "Generates a SDL Makefile (use with C)",
+        "-mc --make-c": "Generates a Makefile for pure C",
+        "-m --main": "Generates a file with the main function",
+        "-s --source": "Generates only a source [.c] file",
+        "-h --header": "Generates only a header [.h] file",
+        "-sh --src-hdr": "Generates a source [.c] and a header [.h] file",
+        "-rmd --readme": "Generates a README file",
+        "-ign --ignore": "Generates a .gitignore file",
+        }
+commands = {
+        "-f --force": "Forces an option into execution and rewrites the files",
+        }
+
+
 def failed_start():
     print("Wrong use of: cgen [OPTION] [COMMAND]")
-    print("Use 'cgen -help' for more info.")
+    print("Use 'cgen --help' for more info.")
     exit(1)
 
 
@@ -187,9 +188,7 @@ def already_exists(what):
     print("\nWARNING:")
     print(f"File {what} already exists.\n")
     print("You can use the -f command to complete the task")
-    print("Use: cgen [OPTION] [COMMAND]")
-    print("[COMMAND]: '-f' -> Forces an option into execution and rewrites the files")
-    print("Use 'cgen -help' for more info.")
+    print("Use 'cgen --help' for more info.")
 
 
 def check(dir) -> bool:
@@ -200,26 +199,29 @@ def check(dir) -> bool:
 def get_needed_option() -> str:
     global forced
     try:
-        if sys.argv[1] not in options.keys():
+        f = False
+        for k in options.keys():
+            if sys.argv[1] in k.split(" "):
+                f = True
+                break
+        if not f:
             failed_start()
     except IndexError:
+        print("a")
         failed_start()
 
-    if sys.argv[1] == "-help":
-        print("Use: cgen [OPTION] [COMMAND]")
-        print("[OPTION]: ", end="")
-        for n in options.keys():
-            print(f"'{n}',", end="")
-        print("\n")
-        for k, v in options.items():
-            print(f"'{k}':{v}")
+    if sys.argv[1] in list(options.keys())[0].split(" "):
+        print("Usage: cgen [OPTION] [COMMAND]")
         print()
-        print("[COMMAND]: ", end="")
-        for n in commands.keys():
-            print(f"'{n}',", end="")
-        print("\n")
+        print("Options:")
+        for k, v in options.items():
+            k = k.split(" ")
+            print(f"{k[0]}{" "*(7-len(k[0]))}{k[1]}{" "*(20-len(k[1]))}{v}")
+        print()
+        print("Commands:")
         for k, v in commands.items():
-            print(f"'{k}':{v}")
+            k = k.split(" ")
+            print(f"{k[0]}{" "*(7-len(k[0]))}{k[1]}{" "*(20-len(k[1]))}{v}")
         exit(0)
 
     try:
@@ -241,13 +243,13 @@ def makefile(option):
 
     os.system(f"touch {working_dir}Makefile")
     with open(f"{working_dir}Makefile", "w") as file:
-        if option == "-MakeC":
+        if option in ["-mc", "--make-c"]:
             file.write(makefilec_temp)
         else:
             file.write(makefilesdl_temp)
 
 
-def cc():
+def srchdr():
     usr = str(input("Name of the file [without .type]? "))
     if check(working_dir+usr+".c"):
         already_exists(usr+".c")
@@ -355,23 +357,23 @@ def gitignore():
 
 option = get_needed_option()
 match option:
-    case "-MakeC":
-        makefile(option)
-    case "-MakeSDL":
-        makefile(option)
-    case "-cc":
-        cc()
-    case "-c":
-        source()
-    case "-h":
-        header()
-    case "-m":
-        main()
-    case "-r":
-        readme()
-    case "-ig":
-        gitignore()
-    case "-pp":
+    case "-p" | "--project":
         create_project()
+    case "-sdl" | "--make-sdl":
+        makefile(option)
+    case "-mc" | "--make-c":
+        makefile(option)
+    case "-m" | "--main":
+        main()
+    case "-s" | "-source":
+        source()
+    case "-h" | "--header":
+        header()
+    case "-sh" | "--src-hdr":
+        srchdr()
+    case "-rmd" | "--readme":
+        readme()
+    case "-ign" | "--ignore":
+        gitignore()
     case _:
         exit(1)

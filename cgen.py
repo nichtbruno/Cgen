@@ -172,8 +172,8 @@ int main() {
     return 0;
 }
 """
-readme_temp = """#NAME
-###DESC
+readme_temp = """# NAME
+### DESC
 """
 
 

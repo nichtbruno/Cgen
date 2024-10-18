@@ -11,6 +11,8 @@
     - -> doesn't delete and create files but just rewrites them
  - Code is still 💩
 
+-----
+
 This script can generate a couple of things when called.
 ```
 Usage: cgen [OPTION] [COMMAND] [LOCATION]

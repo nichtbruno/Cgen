@@ -126,9 +126,9 @@ def makefile(option):
             file.write(text)
 
     if option in ["-mc", "--make-c"]:
-        write(read_temps("makefilec_temp"))
+        write(read_temps("templates/makefilec_temp"))
     else:
-        write(read_temps("makefilesdl_temp"))
+        write(read_temps("templates/makefilesdl_temp"))
 
 
 def srchdr():
@@ -140,7 +140,9 @@ def srchdr():
         print(f"File {usr}.h already exists")
         return
 
-    header_temp = read_temps("header_temp")
+    header_temp = read_temps("templates/header_temp")
+    with open(f"{working_dir}{usr}.c", "w") as file:
+        file.write("")
     with open(f"{working_dir}{usr}.h", "w") as file:
         file.write(header_temp.replace("PLACE", usr.upper()))
 
@@ -151,7 +153,7 @@ def header():
         print(f"File {usr}.h already exists")
         return
 
-    header_temp = read_temps("header_temp")
+    header_temp = read_temps("templates/header_temp")
     with open(f"{working_dir}{usr}.h", "w") as file:
         file.write(header_temp.replace("PLACE", usr.upper()))
 
@@ -173,7 +175,7 @@ def main(src=""):
         already_exists("main.c")
         return
 
-    main_temp = read_temps("main_temp")
+    main_temp = read_temps("templates/main_temp")
     with open(f"{working_dir}{src}main.c", "w") as file:
         file.write(main_temp)
 
@@ -183,7 +185,7 @@ def readme():
         already_exists("README.md")
         return
 
-    readme_temp = read_temps("readme_temp")
+    readme_temp = read_temps("templates/readme_temp")
     name = str(input("Name for README? "))
     desc = str(input("Short description for README? "))
     with open(f"{working_dir}README.md", "w") as file:
@@ -200,7 +202,7 @@ def create_project():
             name = str(input("Name of your project? "))
             desc = str(input("Short description of your project? "))
 
-            readme_temp = read_temps("readme_temp")
+            readme_temp = read_temps("templates/readme_temp")
             with open(f"{working_dir}README.md", "w") as file:
                 file.write(readme_temp.replace("NAME", name).replace("DESC", desc))
 
@@ -231,7 +233,7 @@ def gitignore():
         already_exists(".gitignore")
         return
 
-    gitignore_temp = read_temps("gitignore_temp")
+    gitignore_temp = read_temps("templates/gitignore_temp")
     with open(f"{working_dir}.gitignore", "w") as file:
         file.write(gitignore_temp)
 
@@ -241,7 +243,7 @@ def define_d(edir=""):
         print("File defs.h already exists")
         return
 
-    defs_temp = read_temps("defs_temp")
+    defs_temp = read_temps("templates/defs_temp")
     with open(f"{working_dir}{edir}defs.h", "w") as file:
         file.write(defs_temp)
 

@@ -1,5 +1,14 @@
-# Cgen 😎
-## A generator script for C projects. For faster setup 🚀
+# Cgen V2 😎
+## A generator script for C projects. For faster project setup 🚀
+
+#### New in version 2
+ - Templates are now in seperate files
+ - Can create files in a seperate location
+    - Have to be very careful, it just continues from the working directory
+    so something line ```cgen -c -f ~/directory``` wouldn't work
+ - improved code
+    - -> doesn't delete and create files but just rewrites them
+ - Code is still 💩
 
 This script can generate a couple of things when called.
 ```
@@ -20,13 +29,12 @@ Options:
 Commands:
 -f     --force             Forces an option into execution and rewrites the files
 ```
-**The templates for Makefiles and .gitignore and other are in the cgen.py file as multiline strings.
-You can change these at will.**
+**The templates are now in seperate files!!**
 
 -----
 # Install 🧩
 ```
-git clone https://github.com/nichtbruno/Cgen.git
+git clone https://github.com/nichtbruno/Cgen.git ~/
 ```
 
 Make sure to set an alias in your .bashrc or .zshrc file
